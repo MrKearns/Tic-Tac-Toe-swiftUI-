@@ -46,11 +46,18 @@ struct ContentView: View {
                             boardDisabled = true
                             
                             //check for win or draw
+                            if checkWinConditions(for: .human, in: moves){
+                                print("Human Wins!")
+                            }
                             
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
                                 let computerPosition = computerMove(in: moves)
                                 moves[computerPosition] = Move(player: .computer, boardIndex: computerPosition)
                                 boardDisabled = false
+                                
+                                if checkWinConditions(for: .computer, in: moves){
+                                    print("Computer Wins!")
+                                }
                             }
                             
                         }
@@ -64,13 +71,15 @@ struct ContentView: View {
         .padding()
     }
     
+    
 //    --------------- CHECK IF OCCUPIED FUNC ---------------
     
     func isOccupied(in moves: [Move?], forIndex index: Int) -> Bool{
         return moves.contains(where: {$0?.boardIndex == index})
     }
     
-//    --------------- COMP MOVE FUNC ---------------
+    
+//    --------------- COMP MOVE FUNC ---------------------
     
     func computerMove(in moves: [Move?]) -> Int{
         var movePosition = Int.random(in: 0..<9)
@@ -79,6 +88,25 @@ struct ContentView: View {
            movePosition = Int.random(in: 0..<9)
         }
         return movePosition
+    }
+    
+    
+//   --------------- WIN CONDITIONS FUNCTION  -------------
+    
+    func checkWinConditions(for player: Player, in moves: [Move?]) -> Bool {
+        let winPatterns: Set<Set<Int>> = [[0, 1, 2], [3, 5, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6],]
+        
+        // Compact Map Removes Nils -- Filter filters out other player's moves
+        let playerMoves = moves.compactMap {$0}.filter{$0.player == player}
+        
+        // Go through playerMoves get boardIndexes where all markers are for .player ex: [1, 2, 3]
+        let playerPositions = Set(playerMoves.map{$0.boardIndex})
+        
+        // Check if player position patterns match any of winPatters sets
+        for pattern in winPatterns where pattern.isSubset(of: playerPositions) { return true}
+        
+        
+        return false
     }
     
     
