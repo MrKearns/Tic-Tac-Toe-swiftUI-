@@ -18,9 +18,10 @@ struct ContentView: View {
     
     @State private var moves: [Move?] = Array(repeating: nil, count: 9)
     @State private var boardDisabled = false
-    
     @State private var playerOneTurn = true
+    @State private var alertItem: AlertItem?
     
+    // MARK:  ---------- VIEW BODY ----------
     
     var body: some View {
         GeometryReader{ geometry in
@@ -40,15 +41,24 @@ struct ContentView: View {
                                 
                               
                         }
+                        // ---------- TAP GESTURE --------
                         .onTapGesture {
                             if isOccupied(in: moves, forIndex: i) {return}
                             moves[i] = Move(player: .human, boardIndex: i)
-                            boardDisabled = true
+                            
                             
                             //check for win or draw
                             if checkWinConditions(for: .human, in: moves){
-                                print("Human Wins!")
+                                alertItem = AlertContext.humanWin
+                                return
                             }
+                            
+                            if checkForDraw(in: moves){
+                                alertItem = AlertContext.draw
+                                return
+                            }
+                            
+                            boardDisabled = true
                             
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
                                 let computerPosition = computerMove(in: moves)
@@ -56,7 +66,13 @@ struct ContentView: View {
                                 boardDisabled = false
                                 
                                 if checkWinConditions(for: .computer, in: moves){
-                                    print("Computer Wins!")
+                                    alertItem = AlertContext.computerWin
+                                    return
+                                }
+                                
+                                if checkForDraw(in: moves){
+                                    alertItem = AlertContext.draw
+                                    return
                                 }
                             }
                             
@@ -69,10 +85,14 @@ struct ContentView: View {
         }
         .disabled(boardDisabled)
         .padding()
+        .alert(item: $alertItem, content: {alertItem in
+            Alert(title: alertItem.title, message: alertItem.message, dismissButton: .default(alertItem.buttonTitle, action: {
+                resetGame() }))
+        })
     }
     
     
-//    --------------- CHECK IF OCCUPIED FUNC ---------------
+//    --------------- CHECK IF SQUARE IS OCCUPIED FUNC ---------------
     
     func isOccupied(in moves: [Move?], forIndex index: Int) -> Bool{
         return moves.contains(where: {$0?.boardIndex == index})
@@ -107,6 +127,21 @@ struct ContentView: View {
         
         
         return false
+    }
+    
+    
+    // --------------- CHECK FOR DRAW FUNC ----------
+    
+    func checkForDraw(in moves: [Move?]) -> Bool {
+        // if moves = 9 and no win, then draw
+        return moves.compactMap {$0}.count == 9
+    }
+    
+    
+    // --------------- RESET GAME FUNC ---------------
+    
+    func resetGame(){
+        moves = Array(repeating: nil, count: 9)
     }
     
     

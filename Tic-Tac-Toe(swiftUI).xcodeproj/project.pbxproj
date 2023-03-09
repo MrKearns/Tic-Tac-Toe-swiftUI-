@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		816288D229BA31BF00539CF5 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816288D129BA31BF00539CF5 /* Alerts.swift */; };
 		81F147EC299696650085E419 /* Tic_Tac_Toe_swiftUI_App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F147EB299696650085E419 /* Tic_Tac_Toe_swiftUI_App.swift */; };
 		81F147EE299696650085E419 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F147ED299696650085E419 /* ContentView.swift */; };
 		81F147F0299696670085E419 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81F147EF299696670085E419 /* Assets.xcassets */; };
@@ -14,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		816288D129BA31BF00539CF5 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		81F147E8299696650085E419 /* Tic-Tac-Toe(swiftUI).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tic-Tac-Toe(swiftUI).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81F147EB299696650085E419 /* Tic_Tac_Toe_swiftUI_App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tic_Tac_Toe_swiftUI_App.swift; sourceTree = "<group>"; };
 		81F147ED299696650085E419 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -53,6 +55,7 @@
 			children = (
 				81F147EB299696650085E419 /* Tic_Tac_Toe_swiftUI_App.swift */,
 				81F147ED299696650085E419 /* ContentView.swift */,
+				816288D129BA31BF00539CF5 /* Alerts.swift */,
 				81F147EF299696670085E419 /* Assets.xcassets */,
 				81F147F1299696670085E419 /* Preview Content */,
 			);
@@ -138,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81F147EE299696650085E419 /* ContentView.swift in Sources */,
+				816288D229BA31BF00539CF5 /* Alerts.swift in Sources */,
 				81F147EC299696650085E419 /* Tic_Tac_Toe_swiftUI_App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
