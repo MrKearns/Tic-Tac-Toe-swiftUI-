@@ -102,6 +102,47 @@ struct ContentView: View {
 //    --------------- COMP MOVE FUNC ---------------------
     
     func computerMove(in moves: [Move?]) -> Int{
+        
+        // If Computer can win, take winning space
+        let winPatterns: Set<Set<Int>> = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6],]
+        
+        // Compact Map Removes Nils -- Filter filters out other comp's moves
+        let computerMoves = moves.compactMap {$0}.filter{$0.player == .computer}
+        
+        // Go through computerMoves get boardIndexes where all markers are for .player ex: [1, 2, 3]
+        let computerPositions = Set(computerMoves.map{$0.boardIndex})
+        
+        // Subtracting moves from winPatters to check if only 1 move left
+        for pattern in winPatterns{
+            let winPositinos = pattern.subtracting(computerPositions)
+            
+            // if only one move left to win, take that space
+            if winPositinos.count == 1 {
+                let isAvailable = !isOccupied(in: moves, forIndex: winPositinos.first!)
+                if isAvailable {return winPositinos.first!}
+            }
+        }
+        
+        // -- Computer block player if 1 move left to win --
+        
+        
+        // Compact Map Removes Nils -- Filter filters out other human's moves
+        let humanMoves = moves.compactMap {$0}.filter{$0.player == .human}
+        
+        // Go through computerMoves get boardIndexes where all markers are for .player ex: [1, 2, 3]
+        let humanPositions = Set(humanMoves.map{$0.boardIndex})
+        
+        // Subtracting moves from winPatters to check if only 1 move left
+        for pattern in winPatterns{
+            let winPositinos = pattern.subtracting(humanPositions)
+            
+            // if only one move left for HUMAN to win, comp take that space
+            if winPositinos.count == 1 {
+                let isAvailable = !isOccupied(in: moves, forIndex: winPositinos.first!)
+                if isAvailable {return winPositinos.first!}
+            }
+        }
+        
         var movePosition = Int.random(in: 0..<9)
         
         while isOccupied(in: moves, forIndex: movePosition) {
@@ -114,7 +155,7 @@ struct ContentView: View {
 //   --------------- WIN CONDITIONS FUNCTION  -------------
     
     func checkWinConditions(for player: Player, in moves: [Move?]) -> Bool {
-        let winPatterns: Set<Set<Int>> = [[0, 1, 2], [3, 5, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6],]
+        let winPatterns: Set<Set<Int>> = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6],]
         
         // Compact Map Removes Nils -- Filter filters out other player's moves
         let playerMoves = moves.compactMap {$0}.filter{$0.player == player}
